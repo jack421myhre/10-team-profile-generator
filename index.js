@@ -4,7 +4,7 @@ const Employee = require("./lib/Employee");
 const Manager = require("./lib/Manager");
 const Engineer = require("./lib/Engineer");
 const Intern = require("./lib/Intern");
-const generateHtml = require("./src/generateHtml");
+const teamPageHtml = require("./src/teamPageHtml");
 
 // Holds all team members so we can iterate through and populate on the page
 const myTeam = [];
@@ -46,10 +46,10 @@ function managerPrompt() {
             let { userName, id, email, officeNumber } = response;
             const newManager = new Manager(userName, id, email, officeNumber);
             myTeam.push(newManager);
+            questionPrompt();
         });
 }
 
-questionPrompt();
 function questionPrompt() {
     inquirer
         .prompt([
@@ -115,6 +115,52 @@ function questionPrompt() {
             }
             myTeam.push(newEmployee);
 
-            addEmployee ? questionPrompt() : generateHtml;
+            addEmployee ? questionPrompt() : generateHtml();
         });
+}
+
+function generateHtml() {
+    fs.writeFile("./dist/index.html", teamPageHtml.newHtml(), (err) => {
+        err ? console.error(err) : console.log("success");
+    });
+
+    for (let i = 0; i < myTeam.length; i++) {
+        switch (myTeam[i].getRole()) {
+            case "Manager":
+                fs.appendFile(
+                    "./dist/index.html",
+                    teamPageHtml.managerHtml(myTeam[i]),
+                    (err) => {
+                        err
+                            ? console.error(err)
+                            : console.log("Manager card created!");
+                    }
+                );
+                break;
+            case "Engineer":
+                fs.appendFile(
+                    "./dist/index.html",
+                    teamPageHtml.engineerHtml(myTeam[i]),
+                    (err) => {
+                        err
+                            ? console.error(err)
+                            : console.log("Engineer card created!");
+                    }
+                );
+                break;
+            case "Intern":
+                fs.appendFile(
+                    "./dist/index.html",
+                    teamPageHtml.internHtml(myTeam[i]),
+                    (err) => {
+                        err
+                            ? console.error(err)
+                            : console.log("Intern card created!");
+                    }
+                );
+                break;
+            default:
+                return;
+        }
+    }
 }
