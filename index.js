@@ -1,46 +1,52 @@
 const inquirer = require("inquirer");
+const fs = require("fs");
 const Employee = require("./lib/Employee");
 const Manager = require("./lib/Manager");
 const Engineer = require("./lib/Engineer");
 const Intern = require("./lib/Intern");
+const generateHtml = require("./src/generateHtml");
+
+// Holds all team members so we can iterate through and populate on the page
+const myTeam = [];
 
 // Questions for user about profile setup
 questions = [
-    "Select the profile you would like to set up: ",
+    "Select the team member you would like to set up: ",
     "Employee name?",
     "Employee ID?",
     "Employee Email?",
 ];
 
-// Creates the new employee class based on what the user selects
-function createManager(res) {
-    const manager = new Manager(res.userName, res.id, res.email, res.office);
-    console.log(manager.officeNumber);
-    return manager;
-}
-
-function createEngineer(res) {
-    const engineer = new Engineer(res.userName, res.id, res.email, res.github);
-    console.log(engineer.getGithub());
-    return engineer;
-}
-
-function createIntern(res) {
-    const intern = new Intern(res.userName, res.id, res.email, res.school);
-    console.log(intern.getSchool());
-    return intern;
-}
-// Checks for the type of employee the user selected
-// Maybe move all of this into the when functions in the prompt????
-function checkEmployeeType(res) {
-    switch (res.employeeType) {
-        case "Manager":
-            return createManager(res);
-        case "Engineer":
-            return createEngineer(res);
-        case "Intern":
-            return createIntern(res);
-    }
+managerPrompt();
+function managerPrompt() {
+    inquirer
+        .prompt([
+            {
+                type: "input",
+                message: "What is the team manager's name?",
+                name: "userName",
+            },
+            {
+                type: "input",
+                message: "What is the team manager's ID?",
+                name: "id",
+            },
+            {
+                type: "input",
+                message: "What is the team manager's email?",
+                name: "email",
+            },
+            {
+                type: "input",
+                message: "What is the team manager's office number?",
+                name: "officeNumber",
+            },
+        ])
+        .then((response) => {
+            let { userName, id, email, officeNumber } = response;
+            const newManager = new Manager(userName, id, email, officeNumber);
+            myTeam.push(newManager);
+        });
 }
 
 questionPrompt();
@@ -50,7 +56,7 @@ function questionPrompt() {
             {
                 type: "list",
                 message: questions[0],
-                choices: ["Manager", "Engineer", "Intern"],
+                choices: ["Engineer", "Intern"],
                 name: "employeeType",
             },
             {
@@ -70,32 +76,45 @@ function questionPrompt() {
             },
             {
                 type: "input",
-                message: "Office Number?",
-                name: "office",
-                when: (answers) => {
-                    return answers.employeeType == "Manager";
-                },
-            },
-            {
-                type: "input",
                 message: "Github Username?",
                 name: "github",
-                when: (answers) => {
-                    return answers.employeeType == "Engineer";
-                },
+                when: (response) => response.employeeType === "Engineer",
             },
             {
                 type: "input",
                 message: "School name?",
                 name: "school",
-                when: (answers) => {
-                    return answers.employeeType == "Intern";
-                },
+                when: (response) => response.employeeType === "Intern",
             },
+            {
+                type: "confirm",
+                message: "Do you want to add another team member?",
+                name: "addEmployee",
+            },
+            // Add question to add more employees
             // For each class, append class specific questions at the end of this question list
             // Or give each class their own questions separately if appending is not an option
         ])
-        .then((answers) => {
-            checkEmployeeType(answers);
+        .then((response) => {
+            let newEmployee;
+            let {
+                employeeType,
+                userName,
+                id,
+                email,
+                github,
+                school,
+                addEmployee,
+            } = response;
+            // After object destructuring, this checks for the employeeType,
+            // creates the employee object, and pushes that employee to the myTeam array
+            if (employeeType === "Engineer") {
+                newEmployee = new Engineer(userName, id, email, github);
+            } else if (employeeType === "Intern") {
+                newEmployee = new Intern(userName, id, email, school);
+            }
+            myTeam.push(newEmployee);
+
+            addEmployee ? questionPrompt() : generateHtml;
         });
 }
