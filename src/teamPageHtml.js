@@ -1,4 +1,4 @@
-const newHtml = function () {
+const newHtml = () => {
     return `
     <!DOCTYPE html>
     <html lang="en">
@@ -19,12 +19,17 @@ const newHtml = function () {
             <header class="custom-header">
                 <h1>My Team</h1>
             </header>
+    `;
+};
+
+const closingHtml = () => {
+    return `
         </body>
     </html>
     `;
 };
 
-const managerHtml = function (manager) {
+const managerHtml = (manager) => {
     return `
         <div class="card" style="width: 18rem">
             <div class="card-body">
@@ -40,33 +45,33 @@ const managerHtml = function (manager) {
     `;
 };
 
-const engineerHtml = function (engineer) {
+const engineerHtml = (engineer) => {
     return `
         <div class="card" style="width: 18rem">
             <div class="card-body">
                 <h5 class="card-title" id="user-name">Card title</h5>
-                <p class="card-text" id="title">${userName}</p>
+                <p class="card-text" id="title">${engineer.userName}</p>
             </div>
             <ul class="list-group list-group-flush">
-                <li class="list-group-item">ID:${id}</li>
-                <li class="list-group-item">Email:${email}</li>
-                <li class="list-group-item">GitHub: ${github}</li>
+                <li class="list-group-item">ID:${engineer.id}</li>
+                <li class="list-group-item">Email:${engineer.email}</li>
+                <li class="list-group-item">GitHub: ${engineer.github}</li>
             </ul>
         </div>
     `;
 };
 
-const internHtml = function (intern) {
+const internHtml = (intern) => {
     return `
         <div class="card" style="width: 18rem">
             <div class="card-body">
                 <h5 class="card-title" id="user-name">Card title</h5>
-                <p class="card-text" id="title">${userName}</p>
+                <p class="card-text" id="title">${intern.userName}</p>
             </div>
             <ul class="list-group list-group-flush">
-                <li class="list-group-item">ID: ${id}</li>
-                <li class="list-group-item">Email: ${email}</li>
-                <li class="list-group-item">School: ${school}</li>
+                <li class="list-group-item">ID: ${intern.id}</li>
+                <li class="list-group-item">Email: ${intern.email}</li>
+                <li class="list-group-item">School: ${intern.school}</li>
             </ul>
         </div>
     `;
@@ -77,4 +82,5 @@ module.exports = {
     managerHtml,
     engineerHtml,
     internHtml,
+    closingHtml,
 };

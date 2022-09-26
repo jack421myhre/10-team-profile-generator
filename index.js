@@ -110,10 +110,11 @@ function questionPrompt() {
             // creates the employee object, and pushes that employee to the myTeam array
             if (employeeType === "Engineer") {
                 newEmployee = new Engineer(userName, id, email, github);
+                myTeam.push(newEmployee);
             } else if (employeeType === "Intern") {
                 newEmployee = new Intern(userName, id, email, school);
+                myTeam.push(newEmployee);
             }
-            myTeam.push(newEmployee);
 
             addEmployee ? questionPrompt() : generateHtml();
         });
@@ -160,7 +161,16 @@ function generateHtml() {
                 );
                 break;
             default:
-                return;
+                fs.writeFile(
+                    "./dist/index.html",
+                    teamPageHtml.closingHtml(),
+                    (err) => {
+                        err
+                            ? console.error(err)
+                            : console.log("HTML POPULATED.");
+                    }
+                );
+                break;
         }
     }
 }
