@@ -16,14 +16,17 @@ const newHtml = () => {
             <title>Employee Management</title>
         </head>
         <body>
-            <header class="custom-header">
+            <header class="d-flex flex-row justify-content-center mb-4 custom-header">
                 <h1>My Team</h1>
             </header>
+            <main class="d-flex flex-row justify-content-around align-items-center mb-4 flex-wrap">
     `;
 };
 
 const closingHtml = () => {
     return `
+
+            </main>
         </body>
     </html>
     `;
@@ -31,31 +34,39 @@ const closingHtml = () => {
 
 const managerHtml = (manager) => {
     return `
-        <div class="card" style="width: 18rem">
+        <div class="card custom-card manager-card" style="width: 18rem">
             <div class="card-body">
-                <h5 class="card-title" id="user-name">Card title</h5>
-                <p class="card-text" id="title">${manager.userName}</p>
+                <h5 class="card-title" id="user-name">${manager.userName}</h5>
+                <p class="card-text" id="title">${manager.getRole()}</p>
             </div>
             <ul class="list-group list-group-flush">
-                <li class="list-group-item">ID:${manager.id}</li>
-                <li class="list-group-item">Email:${manager.email}</li>
-                <li class="list-group-item">Office Number: ${manager.officeNumber}</li>
+                <li class="list-group-item">ID: ${manager.id}</li>
+                <li class="list-group-item">Email: <a href="mailto:${
+                    manager.email
+                }">${manager.email}</a></li>
+                <li class="list-group-item">Office Number: ${
+                    manager.officeNumber
+                }</li>
             </ul>
         </div>
     `;
 };
+// <a href="mailto:email@example.com">Send Email</a>
 
 const engineerHtml = (engineer) => {
     return `
-        <div class="card" style="width: 18rem">
+        <div class="card custom-card" style="width: 18rem">
             <div class="card-body">
-                <h5 class="card-title" id="user-name">Card title</h5>
-                <p class="card-text" id="title">${engineer.userName}</p>
+                <h5 class="card-title" id="user-name">${engineer.userName}</h5>
+                <p class="card-text" id="title">${engineer.getRole()}</p>
             </div>
             <ul class="list-group list-group-flush">
-                <li class="list-group-item">ID:${engineer.id}</li>
-                <li class="list-group-item">Email:${engineer.email}</li>
-                <li class="list-group-item">GitHub: ${engineer.github}</li>
+                <li class="list-group-item">ID: ${engineer.id}</li>
+                <li class="list-group-item">Email: <a href="mailto:${
+                    engineer.email
+                }">${engineer.email}</a></li>
+                <li class="list-group-item">GitHub: <a href="https://github.com/
+                ${engineer.github}" target="_blank">${engineer.github}</a></li>
             </ul>
         </div>
     `;
@@ -63,14 +74,15 @@ const engineerHtml = (engineer) => {
 
 const internHtml = (intern) => {
     return `
-        <div class="card" style="width: 18rem">
+        <div class="card custom-card" style="width: 18rem">
             <div class="card-body">
-                <h5 class="card-title" id="user-name">Card title</h5>
-                <p class="card-text" id="title">${intern.userName}</p>
+                <h5 class="card-title" id="user-name">${intern.userName}</h5>
+                <p class="card-text" id="title">${intern.getRole()}</p>
             </div>
             <ul class="list-group list-group-flush">
                 <li class="list-group-item">ID: ${intern.id}</li>
-                <li class="list-group-item">Email: ${intern.email}</li>
+                <li class="list-group-item">Email: <a href="mailto:
+                ${intern.email}">${intern.email}</a></li>
                 <li class="list-group-item">School: ${intern.school}</li>
             </ul>
         </div>

@@ -1,0 +1,19 @@
+body {
+    background-color: #e0fbfc;
+    color: #fffcf2;
+}
+
+.custom-header {
+    background-color: #293241;
+    padding: 20px 0;
+}
+
+.custom-card {
+    background-color: #3d5a80;
+    box-shadow: 0 6px 10px #293241;
+    margin: 16px;
+}
+
+.manager-card {
+    background-color: #ee6c4d;
+}
