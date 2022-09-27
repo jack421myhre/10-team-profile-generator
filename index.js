@@ -122,7 +122,7 @@ function questionPrompt() {
 
 function generateHtml() {
     fs.writeFile("./dist/index.html", teamPageHtml.newHtml(), (err) => {
-        err ? console.error(err) : console.log("success");
+        err ? console.error(err) : console.log("");
     });
 
     for (let i = 0; i < myTeam.length; i++) {
